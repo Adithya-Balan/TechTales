@@ -1,0 +1,117 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block style %}<link href= '{% static "output.css" %}'rel="stylesheet">{% endblock  %}
+
+{% block title %}Blog{% endblock  %}
+
+{% block content %}
+{% include "myapp/navbar.html" %}
+
+{% block body_style %}
+<body class='bg-c3'>
+{% endblock  %}
+
+
+{% comment %} Title bar {% endcomment %}
+<div class='bg-c4 ml-20 mr-20 mt-10 rounded-xl '>
+    <div class = 'flex flex-row justify-between text-white pt-20 pl-10 pb-10 pr-10'>
+        <div class='flex flex-col'>
+            <p class='text-5xl font-bold ml-10'>{{blog_obj.title}}</p>
+            <form method='post'>
+                {% csrf_token %}
+
+                {% if blog_obj in saved_posts %}
+                <input type="hidden" name="uuid" value="{{ blog_obj.uuid }}">
+                <input type='submit' value='Remove'  class='mt-10 px-6 hover:cursor-pointer ml-10 border border-white text-c4 bg-white text-center py-2'>
+                {% else %}
+                <input type="hidden" name="uuid" value="{{ blog_obj.uuid }}">
+                <input type='submit' value='Save Later'  class='mt-10 px-6 hover:cursor-pointer ml-10 border border-white text-center py-2'>
+                {% endif %}
+            </form>
+        </div>
+        
+
+        <div class='flex flex-col gap-2'>
+            <img src = '{{blog_obj.image.url}}' class='h-36 w-36 border-4 rotate-6 border-white  '>
+            <p class='font-extrabold text-xl mt-2'>By {{blog_obj.user.first_name }} {{blog_obj.user.last_name}}</p>
+            <p>Last Update on <span class='font-bold'>{{blog_obj.modified}}</span></p>
+        </div>
+    </div>
+
+</div>
+
+{% comment %} blog contents {% endcomment %}
+<div class='ml-20 mr-20 mt-10 rounded-xl bg-white shadow-2xl p-10 text-lg'>
+    <p>{{ blog_obj.content|linebreaksbr|safe }}</p>
+</div>
+
+{% comment %} Author Section {% endcomment %}
+<div class='ml-96 mr-96 mt-10 rounded-2xl bg-c4 shadow-lg p-8 text-lg border border-gray-200'>
+    <a href='{% url "profile_page" blog_obj.user.info.id %}'>
+        <p class='text-white text-lg text-center font-medium'>About the Author</p>
+
+        <div class='flex flex-row gap-x-4 items-center'>
+            <img src='{{blog_obj.user.info.profile_pic.url}}' class='h-48 w-48 rounded-full border-4 '>
+
+            {% comment %} <ul class="li<p class='mt-6  text-c1 font-medium text-lg leading-relaxed'>
+            {{blog_obj.user.info.about_yourself}}
+        </p>st-disc list-inside mt-8 space-y-2">
+                <li><span class='text-c1 font-semibold'>Blogs:</span> 5</li>
+                <li><span class='text-c1 font-semibold'>Tea</span></li>
+                <li><span class='text-c1 font-semibold'>Milk</span></li>
+            </ul> {% endcomment %}
+
+            <div>
+                <p class='ml-5 text-3xl text-white font-extrabold mb-4 underline'>
+                    {{blog_obj.user.first_name}} {{blog_obj.user.last_name}}
+                </p>
+
+                <p class='mt-6  text-white font-medium text-lg leading-relaxed'>
+                    {{blog_obj.user.info.about_yourself}}
+                </p>
+            </div>
+            
+        </div>
+    </a>
+</div>
+
+{% comment %} Comment Section {% endcomment %}
+
+{% if comment_obj %}
+    <div class='ml-96 mr-96 mt-10 rounded-2xl shadow-lg p-8 text-lg border border-gray-200 bg-white'>
+
+    <p class='text-c4 font-bold text-center text-2xl'>{{comment_len}} Comments</p><br>
+    {% for obj in comment_obj %}
+    <div class='flex flex-row gap-x-6 ml-5'>
+        <img src='{{obj.user.info.profile_pic.url}}' class ='h-20 w-20 rounded-full'>
+
+    <div class='flex flex-col gap-y-4'>
+        <p class='text-2xl font-semibold text-c4'>{{obj.user.first_name}} {% if obj.user == blog_obj.user %}(Author){% endif %}</p>
+        <p>{{obj.content}}<br><hr><br>
+    </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+
+</div>
+
+
+{% comment %} comment Form Section {% endcomment %}
+<div class= 'bg-c4 ml-96 mr-96 mt-10 rounded-xl'>
+
+    <form method='post' class='ml-14 pt-10 pb-10'>
+        {% for field in form %}
+        {% csrf_token %}
+        <span class='text-white font-semibold'>{{field.label}}</span><br><br>
+        <span class='text-lg font-semibold'>{{field}}</span><br>
+        {{field.errors}}<br>
+        
+        {% endfor %}
+        <input type='submit' value='Save Comment' class='bg-white text-c1 px-5 py-2 rounded-lg font-bold hover:bg-c1 hover:text-white hover:cursor-pointer'>
+    </form>
+</div>
+<br><br>
+{% endblock %}

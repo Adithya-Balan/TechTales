@@ -1,0 +1,47 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block style %}<link href= '{% static "output.css" %}'rel="stylesheet">{% endblock  %}
+
+{% block title %}Profile{% endblock  %}
+
+{% block content %}
+{% include "myapp/navbar.html" %}<hr>
+
+<div class='bg-c1'><br>
+<div class='flex flex-row gap-10 ml-48 mt-10'>
+        <img src = '{{user_obj.profile_pic.url}}' class='h-52 w-48 -rotate-6 border-white border-4'>
+        <div class='text-white text-5xl font-bold'>
+            <p>{{user_obj.user.first_name}}'s</p>
+            <p>Blog</p>
+            <p class='bg-white text-c1 mt-10 text-2xl rounded-lg text-center'>Techtales: {{blog_len}}</p>
+        </div>
+    </div>
+
+    <p class='mt-10 ml-48 mr-48 text-xl text-white font-semibold pb-32 '>{{user_obj.about_yourself}}</p>
+</div>
+
+{% comment %} latest thoughts {% endcomment %}
+<div class='relative -mt-28 left-0 right-0 bg-white ml-64 mr-64 rounded-lg shadow-lg z-10'>
+    <p class='text-3xl font-bold text-center mt-5 p-2 pt-4'>Top Blogs</p><br>
+    
+    {% if recent_blog %}
+    <div class='flex flex-row gap-1'>
+        {% for obj in recent_blog %}
+        <a href='{% url "blog_page" obj.uuid %}'>
+        <div class='flex flex-col gap-4 px-5 pb-10 pt-5 hover:bg-c1 cursor-pointer hover:text-white'>
+            <img src = '{{obj.image.url}}' class='h-32 w-32 rounded-full mx-auto'>
+            <p class='font-semibold text-center text-lg'>{{obj.title}}</p>
+            <p class='text-center'>{{obj.content |slice:":120"}}...</p>
+        </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+
+    <img src='{% static "assest/sad.svg" %}' class='h-1/6 w-1/6 mx-auto pb-5'>
+    <p class='text-center font-semibold pb-10'>Oop! No Blogs Yet</p>
+    {% endif %}
+    
+</div><br><br>
+{% endblock %}

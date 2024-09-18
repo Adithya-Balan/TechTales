@@ -1,0 +1,68 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block style %}<link href= '{% static "output.css" %}'rel="stylesheet">{% endblock  %}
+
+{% block title %}Profile{% endblock  %}
+
+
+{% block body_style %}
+    <body class='bg-c3'>
+{% endblock  %}
+    
+
+{% block content %}
+{% include "myapp/navbar.html" %}<hr>
+
+{% comment %} My Blogs {% endcomment %}
+{% if my_blogs %}
+<div>
+    <p class='text-3xl font-semibold text-center mt-10 mb-10'>Your Blogs</p>
+    <div class='grid grid-cols-3 gap-x-4 gap-y-4 ml-40 mr-40'>
+
+        {% for obj in my_blogs %}
+        <a href='{% url "blog_page" obj.uuid%}'>
+            <div class='bg-white p-10 rounded-xl transform transition-transform duration-300 hover:bg-c4 hover:text-white hover:scale-105'>
+                <img src='{{obj.image.url}}' class='h-32 w-32 rounded-full border-black border-2 mx-auto'>
+                <p class='text-center mt-5 font-semibold'>{{obj.title}}</p><br>
+                <p class='text-center'>{{obj.content|slice:":120"}}...</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+    <div class='flex flex-row gap-x-8 '>
+    <img src = '{% static "assest/post_undraw.svg" %}' class='h-1/4 w-1/4 mt-12 ml-64'>
+    <p class='text-3xl font-semibold text-c4 mt-44'>No Blogs Yet!!</p>
+    </div>
+{% endif %}
+
+
+
+{% comment %} My Collected Post {% endcomment %}
+{% if saved_obj %}
+<div>
+    <p class='text-3xl font-semibold text-center mt-10 mb-10 text-c4'>Saved Post</p>
+    <div class='grid grid-cols-3 gap-x-4 gap-y-4 ml-40 mr-40'>
+
+        {% for obj in saved_obj %}
+        <a href='{% url "blog_page" obj.uuid%}'>
+            <div class='bg-white p-10 rounded-xl transform transition-transform duration-300 hover:bg-c4 hover:text-white hover:scale-105'>
+                <img src='{{obj.image.url}}' class='h-32 w-32 rounded-full border-black border-2 mx-auto'>
+                <p class='text-center mt-5 font-semibold'>{{obj.title}}</p><br>
+                <p class='text-center'>{{obj.content|slice:":120"}}...</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+    <div class='flex flex-row gap-x-8 '>
+    <img src = '{% static "assest/post_undraw.svg" %}' class='h-1/4 w-1/4 mt-12 ml-56'>
+    <p class='text-3xl font-semibold text-c4 mt-44'>No Blogs Yet!!</p>
+    </div>
+{% endif %}
+
+<br><br>
+{% endblock %}

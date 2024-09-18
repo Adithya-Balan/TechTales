@@ -1,0 +1,30 @@
+{% load static %}
+<div class ='flex gap-3 bg-c1 text-white text-xl justify-around p-5' >
+    <div class=''>
+    <a href='/home'>TechTales</a></div>
+
+    <div class='flex flex-row gap-2'>
+    <img src='{% static "assest/trending.svg" %}' class='h-10 w-10 '>
+    <a href='http://192.168.31.95:9000' target='_blank' class='mt-1'>Join in Community</a>
+    </div>
+
+    <div class='flex flex-row gap-2'>
+        <img src='{% static "assest/blog.svg" %}' class='h-8 w-8 '>
+        <a href='{% url "your_blog" %}' class='mt-1'>Your TechTales</a>
+    </div>
+
+    <div class='flex flex-row gap-2'>
+        <img src='{% static "assest/profile.svg" %}' class='h-8 w-8 '>
+        <a href='{% url "profile_page" user.info.id %}' class='mt-1'>Your Profile</a>
+    </div>
+  
+    <div class='flex flex-row gap-2'>
+        <img src='{% static "assest/logout.svg" %}' class='h-10 w-10 '>
+        <form method='post' action='/logout/' class='mt-1'>
+            {% csrf_token %}
+            <input type = 'submit' value = 'logout'>
+        </form>
+    </div>
+  
+   
+</div> 

@@ -1,0 +1,42 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% load socialaccount %}
+{% block title %}Sign-up{% endblock  %}
+
+{% block style %}<link href= '{% static "output.css" %}'rel="stylesheet">{% endblock  %}
+
+{% block body_style %}
+    <body class='bg-c1'>
+{% endblock  %}
+    
+
+{% block content %}
+<form method="post" class="bg-white p-6 mt-20 rounded-lg shadow-lg max-w-md mx-auto">
+    {% csrf_token %}
+    <h2 class="text-2xl font-bold text-c1 text-center mb-5">Register</h2>
+    {% for field in form %}
+        <div class="mb-4">
+            <label class="block text-c1 font-medium mb-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <div class="relative">
+                <input
+                    type="{{ field.field.widget.input_type }}"
+                    name="{{ field.name }}"
+                    id="{{ field.id_for_label }}"
+                    value="{{ field.value|default_if_none:'' }}"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-c1 focus:ring-opacity-50"
+                />
+                {% if field.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ field.errors }}</p>
+                {% endif %}
+            </div>
+            <p class="text-sm text-gray-500 mt-1">{{ field.help_text }}</p>
+        </div>
+    {% endfor %}
+    <button type="submit" class="bg-c1 text-white font-semibold py-2 px-4 w-full rounded hover:bg-c1-light focus:outline-none focus:ring-2 focus:ring-c1 focus:ring-opacity-50">Register</button>
+
+    {% comment %} <p class = 'text-c1 text-center mt-10'><a href="{% provider_login_url 'google' %}" class='underline'>Google</a></p> {% endcomment %}
+    <p class = 'text-c1 text-center mt-10'>Already have an account? <a href='/login' class='underline'>Login</a></p>
+
+</form>
+
+{% endblock  %}
