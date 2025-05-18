@@ -149,7 +149,7 @@ STATICFILES_DIRS = [
     BASE_DIR/'static'  #STATICFILES_DIRS allows you to specify additional directories to search for static files.
 ]
 
-MEDIA_ROOT = BASE_DIR/'static'/'uploads'
+MEDIA_ROOT = BASE_DIR/'uploads'
 MEDIA_URL = '/user-media/'
 
 # Default primary key field type
