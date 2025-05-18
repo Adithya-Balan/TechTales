@@ -1,3 +1,22 @@
-/uploads
-/myvenv
-/node_modules
+# Ignore the uploads folder at the root
+/uploads/
+
+# Ignore virtual environment
+/myvenv/
+
+# Ignore Node.js dependencies
+/node_modules/
+
+# Ignore .env file inside src
+/src/.env
+
+# Ignore SQLite DB if it's not meant for version control
+/db.sqlite3
+
+# Optional: Python cache, editor config, etc.
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+.DS_Store
+.env
